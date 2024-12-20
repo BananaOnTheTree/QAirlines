@@ -36,6 +36,10 @@ async function generateFlightID() {
     return flightID;
 }
 
+function convertToTimeZone(date) {
+    return new Date(date).toLocaleString('en-US', { timeZone: 'Asia/Ho_Chi_Minh' });
+}
+
 async function createFlight(flightData) {
     const transaction = await Flight.sequelize.transaction();
     try {
@@ -47,6 +51,10 @@ async function createFlight(flightData) {
         if (seats.length === 0) {
             throw new Error(`No seats found for AircraftID: ${flightData.AircraftID}`);
         }
+        // Convert arrTime, depTime, boardingTime to +07:00 timezone
+        flightData.ArrTime = convertToTimeZone(flightData.ArrTime);
+        flightData.DepTime = convertToTimeZone(flightData.DepTime);
+        flightData.BoardingTime = convertToTimeZone(flightData.BoardingTime);
         const newFlight = await Flight.create(
             { ...flightData, FlightID },
             { transaction }
