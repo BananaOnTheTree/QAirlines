@@ -19,7 +19,7 @@ const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, proces
     },
     logging: console.log,
     // GMT +0
-    timezone: '+00:00'
+    timezone: '+07:00'
 });
 
 module.exports = sequelize;
